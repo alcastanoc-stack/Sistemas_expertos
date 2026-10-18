@@ -1,0 +1,22 @@
+{
+  "dominio": "Diagnóstico de conectividad de red",
+  "reglas": [
+    {"nombre": "R01 Router sin energía", "antecedentes": ["router_sin_luces"], "consecuentes": ["router_sin_energia"], "prioridad": 8, "explicacion": "Un router sin luces no recibe energía."},
+    {"nombre": "R02 Falla física", "antecedentes": ["cable_desconectado"], "consecuentes": ["falla_capa_fisica"], "prioridad": 8, "explicacion": "Cable desconectado implica falla física."},
+    {"nombre": "R03 Falla WiFi local", "antecedentes": ["wifi_desactivado"], "consecuentes": ["falla_wifi_local"], "prioridad": 7, "explicacion": "El adaptador WiFi del equipo está apagado."},
+    {"nombre": "R04 Sin DHCP", "antecedentes": ["ip_169_254"], "consecuentes": ["sin_dhcp"], "prioridad": 6, "explicacion": "Una IP 169.254.x.x indica que no se obtuvo IP por DHCP."},
+    {"nombre": "R05 Falla del ISP", "antecedentes": ["ping_gateway_ok", "ping_ip_publica_falla"], "consecuentes": ["falla_isp"], "prioridad": 6, "explicacion": "Llega al router pero no a internet."},
+    {"nombre": "R06 Falla DNS", "antecedentes": ["ping_ip_publica_ok", "ping_dominio_falla"], "consecuentes": ["falla_dns"], "prioridad": 6, "explicacion": "Hay salida por IP pero no se resuelven nombres."},
+    {"nombre": "R07 Config. del equipo", "antecedentes": ["sin_dhcp", "otros_dispositivos_ok"], "consecuentes": ["falla_config_equipo"], "prioridad": 5, "explicacion": "Otros equipos funcionan: el problema es local."},
+    {"nombre": "R08 DHCP del router", "antecedentes": ["sin_dhcp", "otros_dispositivos_falla"], "consecuentes": ["falla_router_dhcp"], "prioridad": 5, "explicacion": "Nadie obtiene IP: falla el DHCP del router."},
+    {"nombre": "R09 Recomendar cableado", "antecedentes": ["falla_capa_fisica"], "consecuentes": ["recomendar_revisar_cableado"], "prioridad": 4, "explicacion": "Hay falla física.", "accion": "Revisar y reconectar el cable de red."},
+    {"nombre": "R10 Recomendar WiFi", "antecedentes": ["falla_wifi_local"], "consecuentes": ["recomendar_activar_wifi"], "prioridad": 4, "explicacion": "El WiFi local está apagado.", "accion": "Activar el adaptador WiFi del equipo."},
+    {"nombre": "R11 Recomendar energía", "antecedentes": ["router_sin_energia"], "consecuentes": ["recomendar_verificar_alimentacion"], "prioridad": 4, "explicacion": "El router no tiene energía.", "accion": "Verificar la fuente y la toma eléctrica del router."},
+    {"nombre": "R12 DNS local", "antecedentes": ["falla_dns", "otros_dispositivos_ok"], "consecuentes": ["dns_local_incorrecto"], "prioridad": 5, "explicacion": "Otros equipos resuelven bien: DNS mal configurado en este equipo."},
+    {"nombre": "R13 DNS del ISP", "antecedentes": ["falla_dns", "otros_dispositivos_falla"], "consecuentes": ["dns_isp_caido"], "prioridad": 5, "explicacion": "Nadie resuelve nombres: DNS del proveedor caído."},
+    {"nombre": "R14 Recomendar cambiar DNS", "antecedentes": ["dns_local_incorrecto"], "consecuentes": ["recomendar_cambiar_dns"], "prioridad": 4, "explicacion": "El DNS local está mal.", "accion": "Configurar un DNS público (8.8.8.8 o 1.1.1.1)."},
+    {"nombre": "R15 Recomendar reiniciar router", "antecedentes": ["falla_router_dhcp"], "consecuentes": ["recomendar_reiniciar_router"], "prioridad": 4, "explicacion": "El DHCP del router falla.", "accion": "Reiniciar el router para restablecer el DHCP."},
+    {"nombre": "R16 Recomendar renovar IP", "antecedentes": ["falla_config_equipo"], "consecuentes": ["recomendar_renovar_ip"], "prioridad": 4, "explicacion": "El problema es local.", "accion": "Ejecutar ipconfig /release y luego ipconfig /renew."},
+    {"nombre": "R17 Recomendar llamar al ISP", "antecedentes": ["falla_isp"], "consecuentes": ["recomendar_llamar_proveedor"], "prioridad": 4, "explicacion": "El problema está en el proveedor.", "accion": "Contactar al proveedor de internet y reportar la falla."}
+  ]
+}
