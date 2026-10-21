@@ -34,7 +34,7 @@ El resto del sistema usa solo la librería estándar de Python (`json`, `datacla
 ## Ejecución
 
 ```bash
-streamlit run src/app.py
+py -m streamlit run src/app.py
 ```
 
 En la interfaz:
@@ -49,6 +49,8 @@ En la interfaz:
 ```
 Sistemas_expertos/
 ├── README.md
+├── base_codi_clase/
+│   └── motor_originalProf.py  //código original entregado en clase (sin modificar)
 ├── requirements.txt
 ├── .gitignore
 ├── src/
