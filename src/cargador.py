@@ -1,5 +1,5 @@
 import json
-
+# Se encarga de leer la información
 
 def _leer(fuente):
     if hasattr(fuente, "read"):             # archivo subido en la interfaz

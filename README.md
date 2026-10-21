@@ -10,7 +10,7 @@ Sistema experto basado en reglas con **encadenamiento hacia adelante** que diagn
 ## Requisitos
 
 - Python 3.10 o superior
-- GitHub
+- GitHub para clonar el repositorio
 
 ## Instalación
 
@@ -58,7 +58,7 @@ Sistemas_expertos/
 │   ├── cargador.py       # lectura y validación de los archivos JSON
 │   └── app.py            # interfaz Streamlit
 ├── conocimiento/
-│   └── red.json          # base de conocimiento (16 reglas con encadenamiento)
+│   └── red.json          # base de conocimiento (17 reglas con encadenamiento)
 ├── ejemplos/
 │   ├── caso_01_dns.json
 │   ├── caso_02_dhcp.json
@@ -82,10 +82,10 @@ Sistemas_expertos/
   "dominio": "Diagnóstico de conectividad de red",
   "reglas": [
     {
-      "id": "R06",
-      "si": ["ping_ip_publica_ok", "ping_dominio_falla"],
-      "entonces": ["falla_dns"],
-      "prioridad": 5,
+      "nombre": "R06 Falla DNS",
+      "antecedentes": ["ping_ip_publica_ok", "ping_dominio_falla"],
+      "consecuentes": ["falla_dns"],
+      "prioridad": 6,
       "explicacion": "Hay salida a internet por IP pero no resuelve nombres."
     }
   ]
@@ -96,13 +96,25 @@ Sistemas_expertos/
 
 ```json
 {
-  "hechos": ["ping_gateway_ok", "ping_ip_publica_ok", "ping_dominio_falla"]
+  "hechos": {"ping_gateway_ok": true, "ping_ip_publica_ok": true, "ping_dominio_falla": true, "otros_dispositivos_ok": true}
 }
 ```
 
 ## Estrategia de resolución de conflictos
 
-Se aplica en este orden: refracción, prioridad explícita (saliencia), especificidad, recencia y orden de definición. Referentes: OPS5 (Forgy), CLIPS y Giarratano & Riley. El detalle está en el documento técnico.
+Cuando varias reglas pueden ejecutarse al mismo tiempo, el sistema utiliza los siguientes criterios para elegir cuál aplicar:
+
+1. **No repetición: evita ejecutar nuevamente una regla que ya se disparó durante la sesión.
+
+2. **Prioridad: selecciona la regla con el valor de prioridad más alto.
+
+3. **Especificidad: si hay empate, favorece la regla que tenga más antecedentes.
+
+4. **Recencia: si continúa el empate, favorece la regla que tenga más antecedentes entre los hechos agregados por la última regla ejecutada.
+
+5. **Orden de definición: si persiste el empate, selecciona la primera regla según su posición en el archivo JSON.
+
+La estrategia toma como referencia criterios de resolución de conflictos asociados con Bigus, Rolston, CLIPS y OPS5. La prioridad y el desempate por orden de definición son adaptaciones realizadas para este proyecto. Para más detalles, consultar el documento técnico.
 
 ## Casos de ejemplo
 
